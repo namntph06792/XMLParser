@@ -2,5 +2,5 @@
     <string name="app_name">XMLParser</string>
     <string name="btn_action_download">Download</string>
     <string name="edt_url_input">Input Url</string>
-    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_web">WebActivity</string>
 </resources>

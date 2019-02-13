@@ -1,17 +1,21 @@
 package com.fox.xmlparser.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fox.xmlparser.R;
+import com.fox.xmlparser.WebActivity;
 import com.fox.xmlparser.model.News;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetDataAdapter extends RecyclerView.Adapter<GetDataAdapter.NewsHolder> {
@@ -32,11 +36,19 @@ public class GetDataAdapter extends RecyclerView.Adapter<GetDataAdapter.NewsHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsHolder newsHolder, int i) {
+    public void onBindViewHolder(@NonNull final NewsHolder newsHolder, int i) {
         newsHolder.news = news.get(i);
         newsHolder.tvTitle.setText(newsHolder.news.title);
         newsHolder.tvDescription.setText(newsHolder.news.description);
         newsHolder.tvPubDate.setText(newsHolder.news.pubDate);
+        newsHolder.tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WebActivity.class);
+                intent.putExtra("link",newsHolder.news.link);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

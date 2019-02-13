@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.fox.xmlparser.adapter.GetDataAdapter;
 import com.fox.xmlparser.model.News;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -33,14 +34,16 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout tilUrl;
 
     private RecyclerView lvList;
-    LinearLayoutManager linearLayoutManager;
+    private GetDataAdapter getDataAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private List<News> arrayNews;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-
         btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews(){
         tilUrl = findViewById(R.id.tilUrl);
         btnLoad = findViewById(R.id.btnLoad);
-//        lvList = findViewById(R.id.lvList);
+        lvList = findViewById(R.id.lvList);
         linearLayoutManager = new LinearLayoutManager(MainActivity.this);
     }
 
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected List<News> doInBackground(String... strings) {
 
-            List<News> arrayNews = new ArrayList<>();
+            arrayNews = new ArrayList<>();
 
             //Khong cap nhat giao dien trong ham nay
             try{
@@ -137,8 +140,16 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(List<News> news) {
             super.onPostExecute(news);
             //Xu ly du lieu len man hinh tai day
-            Toast.makeText(MainActivity.this,news.size() + "" , Toast.LENGTH_SHORT).show();
+            setRecycleView(news);
         }
+    }
+
+    private void setRecycleView(List<News> news){
+        getDataAdapter = new GetDataAdapter(MainActivity.this,news);
+
+        lvList.setLayoutManager(linearLayoutManager);
+        lvList.setHasFixedSize(true);
+        lvList.setAdapter(getDataAdapter);
     }
 
 }
